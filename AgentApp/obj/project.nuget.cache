@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "ILHXyoc+LvQ=",
+  "dgSpecHash": "/kLeauN5MTE=",
   "success": true,
-  "projectFilePath": "C:\\Ana\\RealEstateApp\\AgentApp\\AgentApp.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\AgentApp\\AgentApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Maria\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.10\\microsoft.netcore.app.ref.9.0.10.nupkg.sha512",
+    "C:\\Users\\Maria\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.10\\microsoft.windowsdesktop.app.ref.9.0.10.nupkg.sha512",
+    "C:\\Users\\Maria\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.10\\microsoft.aspnetcore.app.ref.9.0.10.nupkg.sha512",
+    "C:\\Users\\Maria\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\9.0.10\\microsoft.netcore.app.host.win-x64.9.0.10.nupkg.sha512"
+  ],
   "logs": []
 }
