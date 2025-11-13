@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using ClientApp.Core;
+using ClientApp.Forms;
 
 namespace ClientApp 
 {
@@ -17,8 +18,9 @@ namespace ClientApp
 
         private void viewListingsButton_Click(object sender, EventArgs e)
         {
-            var listingsForm = new ViewListingsForm(client);
+            var listingsForm = new ViewListingsForm(); // ✅ no arguments needed
             listingsForm.ShowDialog();
+
         }
 
         private void favoritesButton_Click(object sender, EventArgs e)

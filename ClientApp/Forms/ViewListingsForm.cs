@@ -1,79 +1,71 @@
 using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using ClientApp.Core;
 
-namespace ClientApp
+namespace ClientApp.Forms
 {
     public partial class ViewListingsForm : Form
     {
-        private ClientAccount client;
-        private List<Property> propertyList;
-
-        public ViewListingsForm(ClientAccount client)
+        public ViewListingsForm()
         {
-            InitializeComponent();
-            this.client = client;
-
-            // Mock data (for now)
-            propertyList = new List<Property>
-            {
-                new Property { Name = "Modern Apartment", Address = "Str. Lalelelor 10", Price = 120000, Description = "2 bedrooms, city view." },
-                new Property { Name = "Family House", Address = "Str. Brândușelor 5", Price = 220000, Description = "Spacious 4-bedroom home with garden." },
-                new Property { Name = "Studio Downtown", Address = "Bd. Unirii 25", Price = 85000, Description = "Compact studio in city center." }
-            };
-
+            InitializeComponent(); // Designer setup
             LoadProperties();
         }
 
         private void LoadProperties()
         {
+            // Clear previous listings
             listingsPanel.Controls.Clear();
             int y = 20;
 
+            // Fetch all properties from database
+            var propertyList = PropertyData.GetAllProperties();
+
             foreach (var property in propertyList)
             {
+                // Create a card panel for each property
                 Panel card = new Panel
                 {
                     BorderStyle = BorderStyle.FixedSingle,
-                    Location = new System.Drawing.Point(20, y),
-                    Size = new System.Drawing.Size(440, 120)
+                    Location = new Point(10, y),
+                    Size = new Size(460, 120)
                 };
 
                 Label nameLabel = new Label
                 {
                     Text = property.Name,
-                    Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold),
-                    Location = new System.Drawing.Point(10, 10),
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Location = new Point(10, 10),
                     AutoSize = true
                 };
 
                 Label addressLabel = new Label
                 {
                     Text = "📍 " + property.Address,
-                    Location = new System.Drawing.Point(10, 40),
+                    Location = new Point(10, 40),
                     AutoSize = true
                 };
 
                 Label priceLabel = new Label
                 {
                     Text = $"💰 {property.Price:C0}",
-                    Location = new System.Drawing.Point(10, 65),
+                    Location = new Point(10, 65),
                     AutoSize = true
                 };
 
                 Label descLabel = new Label
                 {
                     Text = property.Description,
-                    Location = new System.Drawing.Point(10, 90),
+                    Location = new Point(10, 90),
                     AutoSize = true
                 };
 
                 Button favButton = new Button
                 {
                     Text = "❤️ Favorite",
-                    Location = new System.Drawing.Point(340, 40),
-                    Size = new System.Drawing.Size(80, 30)
+                    Location = new Point(360, 40),
+                    Size = new Size(80, 30)
                 };
                 favButton.Click += (s, e) => AddToFavorites(property);
 
@@ -90,8 +82,8 @@ namespace ClientApp
 
         private void AddToFavorites(Property property)
         {
-            MessageBox.Show($"{property.Name} added to favorites!", "Success");
-            // TODO: Save to client's favorites (e.g. database or list)
+            MessageBox.Show($"{property.Name} added to favorites!");
+            // TODO: Add to favorites in database or client account
         }
 
         private void backButton_Click(object sender, EventArgs e)

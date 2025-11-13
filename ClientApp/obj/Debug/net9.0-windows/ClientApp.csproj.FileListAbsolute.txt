@@ -27,3 +27,6 @@ C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-wind
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-windows\ClientApp.pdb
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-windows\ClientApp.genruntimeconfig.cache
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-windows\ref\ClientApp.dll
+C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-windows\ClientApp.csproj.AssemblyReference.cache
+C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\bin\Debug\net9.0-windows\System.Data.SQLite.dll
+C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-windows\ClientApp.csproj.Up2Date

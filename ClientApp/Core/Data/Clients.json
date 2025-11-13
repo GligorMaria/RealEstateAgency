@@ -1,9 +1,17 @@
 [
   {
-    "Username": "ana_client",
-    "Password": "ana_client",
-    "FullName": "Ana Eribacan",
-    "Email": "ana.client@student.upt.ro",
-    "Phone": "0758599954"
+    "Username": "maria",
+    "Password": "1234",
+    "FullName": "Maria Popescu",
+    "Email": "maria@gmail.com",
+    "Phone": "0722000000"
+  },
+  {
+    "Username": "ion",
+    "Password": "abcd",
+    "FullName": "Ion Ionescu",
+    "Email": "ion@example.com",
+    "Phone": "0711000000"
   }
 ]
+
