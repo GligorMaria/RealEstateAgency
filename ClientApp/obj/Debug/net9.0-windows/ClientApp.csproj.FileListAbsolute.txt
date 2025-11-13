@@ -13,9 +13,9 @@ C:\Ana\RealEstateApp\ClientApp\obj\Debug\net9.0-windows\ClientApp.pdb
 C:\Ana\RealEstateApp\ClientApp\obj\Debug\net9.0-windows\ClientApp.genruntimeconfig.cache
 C:\Ana\RealEstateApp\ClientApp\obj\Debug\net9.0-windows\ref\ClientApp.dll
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\bin\Debug\net9.0-windows\ClientApp.exe
+C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\bin\Debug\net9.0-windows\ClientApp.dll
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\bin\Debug\net9.0-windows\ClientApp.deps.json
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\bin\Debug\net9.0-windows\ClientApp.runtimeconfig.json
-C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\bin\Debug\net9.0-windows\ClientApp.dll
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\bin\Debug\net9.0-windows\ClientApp.pdb
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-windows\ClientApp.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Maria\Documents\GitHub\RealEstateAgency\ClientApp\obj\Debug\net9.0-windows\ClientApp.AssemblyInfoInputs.cache

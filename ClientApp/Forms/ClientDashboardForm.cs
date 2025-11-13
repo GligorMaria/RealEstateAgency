@@ -2,24 +2,43 @@ using System;
 using System.Windows.Forms;
 using ClientApp.Core;
 
-namespace ClientApp.Forms
+namespace ClientApp 
 {
     public partial class ClientDashboardForm : Form
     {
-        private ClientAccount clientAccount;
+        private ClientAccount client;
 
-        public ClientDashboardForm(ClientAccount clientAccount)
+        public ClientDashboardForm(ClientAccount client)
         {
-            this.clientAccount = clientAccount;
             InitializeComponent();
+            this.client = client;
+            welcomeLabel.Text = $"Welcome, {client.FullName}!";
         }
 
-        private void InitializeComponent()
+        private void viewListingsButton_Click(object sender, EventArgs e)
         {
-            this.SuspendLayout();
-            this.ClientSize = new System.Drawing.Size(400, 300);
-            this.Text = $"Dashboard - {clientAccount.FullName}";
-            this.ResumeLayout(false);
+            var listingsForm = new ViewListingsForm(client);
+            listingsForm.ShowDialog();
+        }
+
+        private void favoritesButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Here you will see your favorite properties.");
+            // Later: open a FavoritesForm
+        }
+
+      private void requestMeetingButton_Click(object sender, EventArgs e)
+        {
+            var meetingForm = new RequestMeetingForm(client);
+            meetingForm.ShowDialog();
+        }
+
+
+        private void logoutButton_Click(object sender, EventArgs e)
+        {
+            var loginForm = new ClientLoginForm();
+            loginForm.Show();
+            this.Hide();
         }
     }
 }
