@@ -12,6 +12,12 @@
     "FullName": "Ion Ionescu",
     "Email": "ion@example.com",
     "Phone": "0711000000"
+  },
+  {
+    "Username": "alex",
+    "Password": "alex",
+    "FullName": "alex",
+    "Email": "alex",
+    "Phone": "alex"
   }
 ]
-
