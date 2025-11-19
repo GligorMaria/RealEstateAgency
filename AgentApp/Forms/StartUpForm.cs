@@ -12,114 +12,118 @@ namespace AgentApp.Forms
         private Button btnAgent;
         private Button btnClient;
         private Button btnExit;
-        private Random rand = new Random();
 
         public StartUpForm()
         {
-            this.Text = "Welcome to Real Estate App";
+            this.Text = "Welcome ✨";
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.ClientSize = new Size(400, 250);
-            this.BackColor = Color.Pink;
+            this.ClientSize = new Size(450, 320);
 
-            // Agent button (white, round)
-            btnAgent = new Button()
-            {
-                Text = "Agent",
-                Location = new Point(50, 80),
-                Size = new Size(120, 40),
-                BackColor = Color.White,
-                FlatStyle = FlatStyle.Flat
-            };
+            // Soft pastel background
+            this.BackColor = Color.FromArgb(255, 240, 245);
+
+            // Cute buttons
+            btnAgent = CreateCuteButton("Agent", new Point(50, 150));
+            btnClient = CreateCuteButton("Client", new Point(250, 150));
+            btnExit = CreateSmallButton("Exit", new Point(175, 240));
+
             btnAgent.Click += (s, e) =>
             {
                 var agentForm = new AgentDashboardForm("AgentUser");
                 agentForm.Show();
                 this.Hide();
             };
-            MakeButtonRound(btnAgent);
 
-            // Client button (white, round)
-            btnClient = new Button()
-            {
-                Text = "Client",
-                Location = new Point(220, 80),
-                Size = new Size(120, 40),
-                BackColor = Color.White,
-                FlatStyle = FlatStyle.Flat
-            };
             btnClient.Click += (s, e) =>
             {
                 var loginForm = new ClientLoginForm();
                 loginForm.Show();
                 this.Hide();
             };
-            MakeButtonRound(btnClient);
 
-            // Exit button (red, heart shape)
-            btnExit = new Button()
-            {
-                Text = "Exit",
-                Location = new Point(140, 150),
-                Size = new Size(120, 100), // taller for heart shape
-                BackColor = Color.Red,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
-            };
             btnExit.Click += (s, e) => Application.Exit();
-            MakeButtonHeart(btnExit);
 
             Controls.Add(btnAgent);
             Controls.Add(btnClient);
             Controls.Add(btnExit);
 
-            // Hook up Paint event for glitter
-            this.Paint += StartUpForm_Paint;
+            // Main title
+            Label title = new Label()
+            {
+                Text = "Real Estate App",
+                Font = new Font("Segoe UI", 20, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(120, 0, 0, 0),
+                AutoSize = false,
+                Size = new Size(450, 55),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(0, 15)
+            };
+            Controls.Add(title);
+
+            // ✨ Cute pastel subtitle: "Choose your account"
+            Label subtitle = new Label()
+            {
+                Text = "Choose your account ✨",
+                Font = new Font("Segoe UI", 14, FontStyle.Italic),
+                ForeColor = Color.FromArgb(255, 140, 170), // pastel pink
+                AutoSize = false,
+                Size = new Size(450, 40),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(0, 85)
+            };
+            Controls.Add(subtitle);
         }
 
-        private void MakeButtonRound(Button btn)
+        private Button CreateCuteButton(string text, Point location)
         {
-            btn.FlatStyle = FlatStyle.Flat;
+            Button btn = new Button()
+            {
+                Text = text,
+                Size = new Size(140, 50),
+                Location = location,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                BackColor = Color.FromArgb(255, 210, 230),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+
             btn.FlatAppearance.BorderSize = 0;
-            var path = new GraphicsPath();
-            path.AddEllipse(0, 0, btn.Width, btn.Height);
-            btn.Region = new Region(path);
+            MakeCornersRounded(btn, 25);
+            return btn;
         }
 
-        private void MakeButtonHeart(Button btn)
+        private Button CreateSmallButton(string text, Point location)
+        {
+            Button btn = new Button()
+            {
+                Text = text,
+                Size = new Size(100, 40),
+                Location = location,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                BackColor = Color.FromArgb(255, 170, 190),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            btn.FlatAppearance.BorderSize = 0;
+            MakeCornersRounded(btn, 18);
+            return btn;
+        }
+
+        private void MakeCornersRounded(Button btn, int radius)
         {
             var path = new GraphicsPath();
+            int w = btn.Width;
+            int h = btn.Height;
 
-            // Approximate heart shape with Bezier curves
-            path.StartFigure();
-            path.AddBezier(new Point(btn.Width / 2, btn.Height / 4),
-                           new Point(btn.Width, 0),
-                           new Point(btn.Width, btn.Height / 2),
-                           new Point(btn.Width / 2, btn.Height));
-            path.AddBezier(new Point(btn.Width / 2, btn.Height),
-                           new Point(0, btn.Height / 2),
-                           new Point(0, 0),
-                           new Point(btn.Width / 2, btn.Height / 4));
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(w - radius, 0, radius, radius, 270, 90);
+            path.AddArc(w - radius, h - radius, radius, radius, 0, 90);
+            path.AddArc(0, h - radius, radius, radius, 90, 90);
             path.CloseFigure();
 
             btn.Region = new Region(path);
-        }
-
-        // Glitter effect
-        private void StartUpForm_Paint(object sender, PaintEventArgs e)
-        {
-            for (int i = 0; i < 50; i++) // number of sparkles
-            {
-                int x = rand.Next(this.ClientSize.Width);
-                int y = rand.Next(this.ClientSize.Height);
-                int size = rand.Next(2, 6); // sparkle size
-
-                using (Brush brush = new SolidBrush(Color.FromArgb(
-                    rand.Next(200, 256), // brightness
-                    255, 255, rand.Next(200, 256)))) // pastel sparkle
-                {
-                    e.Graphics.FillEllipse(brush, x, y, size, size);
-                }
-            }
         }
     }
 }

@@ -19,33 +19,33 @@ namespace ClientApp
 
             this.SuspendLayout();
 
-            // Welcome label
-            this.welcomeLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.welcomeLabel.Location = new System.Drawing.Point(50, 30);
+            // 🌸 Background (soft pastel gradient)
+            this.BackColor = System.Drawing.Color.FromArgb(255, 240, 245); // soft pink
+
+            // 🌟 Welcome label (cute aesthetic)
+            this.welcomeLabel.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.welcomeLabel.ForeColor = System.Drawing.Color.FromArgb(255, 120, 140);
+            this.welcomeLabel.Text = "Welcome Back ✨";
+            this.welcomeLabel.Location = new System.Drawing.Point(80, 25);
             this.welcomeLabel.AutoSize = true;
 
-            // View Listings
-            this.viewListingsButton.Text = "🏡 View Listings";
-            this.viewListingsButton.Location = new System.Drawing.Point(100, 90);
-            this.viewListingsButton.Size = new System.Drawing.Size(180, 40);
-            this.viewListingsButton.Click += new System.EventHandler(this.viewListingsButton_Click);
+            // 🌸 Buttons (cute rounded pastel)
+            StyleCuteButton(this.viewListingsButton, "🏡 View Listings", 90);
+            StyleCuteButton(this.favoritesButton, "💖 Favorite Properties", 150);
+            StyleCuteButton(this.requestMeetingButton, "📅 Request Meeting", 210);
 
-            // Favorites
-            this.favoritesButton.Text = "💖 Favorite Properties";
-            this.favoritesButton.Location = new System.Drawing.Point(100, 150);
-            this.favoritesButton.Size = new System.Drawing.Size(180, 40);
-            this.favoritesButton.Click += new System.EventHandler(this.favoritesButton_Click);
-
-            // Request Meeting
-            this.requestMeetingButton.Text = "📅 Request Meeting";
-            this.requestMeetingButton.Location = new System.Drawing.Point(100, 210);
-            this.requestMeetingButton.Size = new System.Drawing.Size(180, 40);
-            this.requestMeetingButton.Click += new System.EventHandler(this.requestMeetingButton_Click);
-
-            // Logout
+            // Logout (smaller, still cute)
             this.logoutButton.Text = "🚪 Logout";
-            this.logoutButton.Location = new System.Drawing.Point(100, 270);
-            this.logoutButton.Size = new System.Drawing.Size(180, 35);
+            this.logoutButton.Location = new System.Drawing.Point(110, 270);
+            this.logoutButton.Size = new System.Drawing.Size(180, 40);
+            this.logoutButton.BackColor = System.Drawing.Color.FromArgb(255, 200, 210);
+            this.logoutButton.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.logoutButton.ForeColor = System.Drawing.Color.White;
+            this.logoutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.logoutButton.FlatAppearance.BorderSize = 0;
+            this.logoutButton.Region = new System.Drawing.Region(
+                CreateRoundedPath(this.logoutButton.Width, this.logoutButton.Height, 25)
+            );
             this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
 
             // Form setup
@@ -60,6 +60,35 @@ namespace ClientApp
 
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
+
+        // 🎀 Helper method to style cute buttons
+        private void StyleCuteButton(System.Windows.Forms.Button btn, string text, int y)
+        {
+            btn.Text = text;
+            btn.Location = new System.Drawing.Point(110, y);
+            btn.Size = new System.Drawing.Size(180, 45);
+            btn.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            btn.BackColor = System.Drawing.Color.FromArgb(255, 210, 230);
+            btn.ForeColor = System.Drawing.Color.White;
+            btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+
+            btn.Region = new System.Drawing.Region(
+                CreateRoundedPath(btn.Width, btn.Height, 25)
+            );
+        }
+
+        // 🎀 Rounded corner path
+        private System.Drawing.Drawing2D.GraphicsPath CreateRoundedPath(int width, int height, int radius)
+        {
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(width - radius, height - radius, radius, radius, 0, 90);
+            path.AddArc(0, height - radius, radius, radius, 90, 90);
+            path.CloseFigure();
+            return path;
         }
     }
 }
