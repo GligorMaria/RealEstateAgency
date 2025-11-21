@@ -12,7 +12,6 @@ namespace AgentApp
             ApplicationConfiguration.Initialize();
             Application.Run(new StartUpForm());
 
-
         }
     }
 }

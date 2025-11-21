@@ -3,7 +3,7 @@ using ClientApp.Core;
 
 using System.Data.SQLite;
 
-namespace ClientApp.Core
+namespace AgentApp.Core
 {
     public static class Database
     {
