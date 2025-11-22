@@ -18,36 +18,43 @@ namespace AgentApp.Forms
             this.Text = "Welcome ✨";
             this.StartPosition = FormStartPosition.CenterScreen;
             this.ClientSize = new Size(450, 320);
+            this.BackColor = Color.FromArgb(255, 240, 245); // Soft pastel background
 
-            // Soft pastel background
-            this.BackColor = Color.FromArgb(255, 240, 245);
+            // ✅ Confirm form is launching
+            MessageBox.Show("✅ StartUpForm constructor ran", "Debug");
 
-            // Cute buttons
+            // Buttons
             btnAgent = CreateCuteButton("Agent", new Point(50, 150));
             btnClient = CreateCuteButton("Client", new Point(250, 150));
             btnExit = CreateSmallButton("Exit", new Point(175, 240));
 
             btnAgent.Click += (s, e) =>
             {
-                var agentForm = new AgentDashboardForm("AgentUser");
+                Console.WriteLine("[StartUpForm] Agent button clicked");
+                var agentForm = new LoginForm();
                 agentForm.Show();
                 this.Hide();
             };
 
             btnClient.Click += (s, e) =>
             {
+                Console.WriteLine("[StartUpForm] Client button clicked");
                 var loginForm = new ClientLoginForm();
                 loginForm.Show();
                 this.Hide();
             };
 
-            btnExit.Click += (s, e) => Application.Exit();
+            btnExit.Click += (s, e) =>
+            {
+                Console.WriteLine("[StartUpForm] Exit button clicked");
+                Application.Exit();
+            };
 
             Controls.Add(btnAgent);
             Controls.Add(btnClient);
             Controls.Add(btnExit);
 
-            // Main title
+            // Title
             Label title = new Label()
             {
                 Text = "Real Estate App",
@@ -61,18 +68,24 @@ namespace AgentApp.Forms
             };
             Controls.Add(title);
 
-            // ✨ Cute pastel subtitle: "Choose your account"
+            // Subtitle
             Label subtitle = new Label()
             {
                 Text = "Choose your account ✨",
                 Font = new Font("Segoe UI", 14, FontStyle.Italic),
-                ForeColor = Color.FromArgb(255, 140, 170), // pastel pink
+                ForeColor = Color.FromArgb(255, 140, 170),
                 AutoSize = false,
                 Size = new Size(450, 40),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Location = new Point(0, 85)
             };
             Controls.Add(subtitle);
+
+            // ✅ Hook into Load event
+            this.Load += (s, e) =>
+            {
+                Console.WriteLine("[StartUpForm] Load event triggered");
+            };
         }
 
         private Button CreateCuteButton(string text, Point location)

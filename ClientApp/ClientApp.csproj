@@ -12,4 +12,8 @@
     <PackageReference Include="System.Data.SQLite" Version="2.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RealEstateApp.Core\RealEstateApp.Core.csproj" />
+  </ItemGroup>
+
 </Project>

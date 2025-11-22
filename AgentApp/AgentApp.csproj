@@ -2,10 +2,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClientApp\ClientApp.csproj" />
+    <ProjectReference Include="..\RealEstateApp.Core\RealEstateApp.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Forms\MainMenuForm.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>
 
   <PropertyGroup>

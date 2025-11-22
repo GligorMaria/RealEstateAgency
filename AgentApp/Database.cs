@@ -1,17 +1,14 @@
 using System.Data.SQLite;
-using ClientApp.Core; 
-
-using System.Data.SQLite;
+using System.IO;
 
 namespace AgentApp.Core
 {
-    public static class Database
+    public static class DatabaseHelper
     {
-        private static string connectionString = @"Data Source=..\..\..\Database\RealEstateDatabase.db;Version=3;";
-
-        public static SQLiteConnection GetConnection()
+        public static SQLiteConnection GetConnection(string dbFile)
         {
-            return new SQLiteConnection(connectionString);
+            string path = Path.Combine("Database", dbFile);
+            return new SQLiteConnection($"Data Source={path};Version=3;");
         }
     }
 }

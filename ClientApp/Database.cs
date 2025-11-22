@@ -1,8 +1,6 @@
 using System.Data.SQLite;
 using ClientApp.Core; 
 
-using System.Data.SQLite;
-
 namespace ClientApp.Core
 {
     public static class Database

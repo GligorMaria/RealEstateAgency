@@ -1,109 +1,147 @@
 using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
 using System.Windows.Forms;
-using AgentApp.Core;
+using RealEstateApp.Core;
+using System.Data.SQLite;
 
 namespace AgentApp.Forms
 {
     public class CreateAccountForm : Form
     {
-        private Label ?lblUsername;
-        private Label ?lblPassword;
-        private Label ?lblConfirm;
-        private TextBox ?txtUsername;
-        private TextBox ?txtPassword;
-        private TextBox ?txtConfirm;
-        private Button ?btnCreate;
-        private Button ?btnCancel;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
+        private TextBox txtConfirm;
+        private TextBox txtFullName;
+        private TextBox txtEmail;
+        private TextBox txtPhone;
+        private Button btnCreate;
+        private Button btnCancel;
+        private Button btnClose;
 
         public CreateAccountForm()
         {
-            InitializeComponent();
+            this.Text = "Create Account";
+            this.ClientSize = new Size(400, 420);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.DoubleBuffered = true;
+
+            // Username
+            Label lblUsername = new Label() { Text = "Username", Location = new Point(40, 60), ForeColor = Color.White, BackColor = Color.Transparent, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            txtUsername = new TextBox() { Location = new Point(180, 60), Width = 180, BackColor = Color.LavenderBlush };
+
+            // Password
+            Label lblPassword = new Label() { Text = "Password", Location = new Point(40, 100), ForeColor = Color.White, BackColor = Color.Transparent, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            txtPassword = new TextBox() { Location = new Point(180, 100), Width = 180, PasswordChar = '*', BackColor = Color.LavenderBlush };
+
+            // Confirm Password
+            Label lblConfirm = new Label() { Text = "Confirm Password", Location = new Point(40, 140), ForeColor = Color.White, BackColor = Color.Transparent, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            txtConfirm = new TextBox() { Location = new Point(180, 140), Width = 180, PasswordChar = '*', BackColor = Color.LavenderBlush };
+
+            // Full Name
+            Label lblFullName = new Label() { Text = "Full Name", Location = new Point(40, 180), ForeColor = Color.White, BackColor = Color.Transparent, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            txtFullName = new TextBox() { Location = new Point(180, 180), Width = 180, BackColor = Color.LavenderBlush };
+
+            // Email
+            Label lblEmail = new Label() { Text = "Email", Location = new Point(40, 220), ForeColor = Color.White, BackColor = Color.Transparent, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            txtEmail = new TextBox() { Location = new Point(180, 220), Width = 180, BackColor = Color.LavenderBlush };
+
+            // Phone
+            Label lblPhone = new Label() { Text = "Phone", Location = new Point(40, 260), ForeColor = Color.White, BackColor = Color.Transparent, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            txtPhone = new TextBox() { Location = new Point(180, 260), Width = 180, BackColor = Color.LavenderBlush };
+
+            // Create button
+            btnCreate = new Button() { Text = "Create", Location = new Point(80, 320), Width = 120, Height = 40, BackColor = Color.DeepPink, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            btnCreate.FlatAppearance.BorderSize = 0;
+            btnCreate.Click += BtnCreate_Click;
+
+            // Cancel button
+            btnCancel = new Button() { Text = "Cancel", Location = new Point(220, 320), Width = 120, Height = 40, BackColor = Color.MediumPurple, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.Click += (s, e) => this.Close();
+
+            // Close button
+            btnClose = new Button() { Text = "X", ForeColor = Color.White, BackColor = Color.Transparent, FlatStyle = FlatStyle.Flat, Location = new Point(this.ClientSize.Width - 40, 10), Size = new Size(30, 30), Font = new Font("Segoe UI", 12, FontStyle.Bold) };
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.Click += (s, e) => this.Close();
+
+            Controls.AddRange(new Control[] { lblUsername, txtUsername, lblPassword, txtPassword, lblConfirm, txtConfirm, lblFullName, txtFullName, lblEmail, txtEmail, lblPhone, txtPhone, btnCreate, btnCancel, btnClose });
         }
 
-        private void InitializeComponent()
+        protected override void OnPaint(PaintEventArgs e)
         {
-            this.Text = "Create Account";
-            this.ClientSize = new Size(400, 300);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.BackColor = Color.FromArgb(255, 123, 0);
-
-            lblUsername = new Label() { Text = "Username", Location = new Point(50, 30), AutoSize = true };
-            txtUsername = new TextBox() { Location = new Point(150, 30), Width = 180 };
-
-            lblPassword = new Label() { Text = "Password", Location = new Point(50, 70), AutoSize = true };
-            txtPassword = new TextBox() { Location = new Point(150, 70), Width = 180, UseSystemPasswordChar = true };
-
-            lblConfirm = new Label() { Text = "Confirm Password", Location = new Point(50, 110), AutoSize = true };
-            txtConfirm = new TextBox() { Location = new Point(180, 110), Width = 180, UseSystemPasswordChar = true };
-
-            btnCreate = new Button()
+            var rect = this.ClientRectangle;
+            using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(rect, Color.MediumPurple, Color.DeepPink, 45F))
             {
-                Text = "Create",
-                Location = new Point(80, 180),
-                Size = new Size(120, 50),
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold)
-            };
+                e.Graphics.FillRectangle(brush, rect);
+            }
+            base.OnPaint(e);
+        }
 
-            btnCancel = new Button()
+        private void BtnCreate_Click(object? sender, EventArgs e)
+        {
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Text.Trim();
+            string confirm = txtConfirm.Text.Trim();
+            string fullName = txtFullName.Text.Trim();
+            string email = txtEmail.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                Text = "Cancel",
-                Location = new Point(200, 180),
-                Size = new Size(120, 50),
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold)
-            };
+                MessageBox.Show("Username and password are required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            btnCreate.Click += (s, e) =>
+            if (password != confirm)
             {
-                string username = txtUsername.Text.Trim();
-                string password = txtPassword.Text.Trim();
-                string confirm = txtConfirm.Text.Trim();
+                MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            try
+            {
+                string actualPath = DatabaseHelper.GetDatabasePath("AgentAccounts.db");
+                MessageBox.Show("CreateAccountForm is using DB path:\n" + actualPath, "Path Check");
+
+                using var conn = DatabaseHelper.GetConnection("AgentAccounts.db");
+                conn.Open();
+
+                var verifyCmd = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table' AND name='Agents';", conn);
+                var result = verifyCmd.ExecuteScalar();
+                if (result == null)
                 {
-                    MessageBox.Show("Username and password are required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("❌ Agents table NOT found in this DB", "Table Check");
                     return;
                 }
 
-                if (password != confirm)
-                {
-                    MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                var checkCmd = new SQLiteCommand("SELECT COUNT(*) FROM Agents WHERE Username=@u", conn);
+                checkCmd.Parameters.AddWithValue("@u", username);
+                long count = (long)checkCmd.ExecuteScalar();
 
-                var agents = AgentLogin.LoadAgents();
-                if (agents.Any(a => a.Username == username))
+                if (count > 0)
                 {
                     MessageBox.Show("Username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                agents.Add(new AgentAccount { Username = username, Password = password });
+                var insertCmd = new SQLiteCommand(
+                    "INSERT INTO Agents (Username, Password, FullName, Email, PhoneNumber) VALUES (@u, @p, @n, @e, @ph)", conn);
+                insertCmd.Parameters.AddWithValue("@u", username);
+                insertCmd.Parameters.AddWithValue("@p", password);
+                insertCmd.Parameters.AddWithValue("@n", fullName);
+                insertCmd.Parameters.AddWithValue("@e", email);
+                insertCmd.Parameters.AddWithValue("@ph", phone);
 
-                string json = JsonSerializer.Serialize(agents, new JsonSerializerOptions { WriteIndented = true });
-                string path = Path.Combine("Core", "Data", "Agents.json");
-                string folder = Path.GetDirectoryName(path)!;
+                insertCmd.ExecuteNonQuery();
 
-                if (!Directory.Exists(folder))
-                    Directory.CreateDirectory(folder);
-
-                File.WriteAllText(path, json);
-
-                MessageBox.Show("Account created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Agent account created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
-            };
-
-            btnCancel.Click += (s, e) => this.Close();
-
-            Controls.AddRange(new Control[] {
-                lblUsername, txtUsername,
-                lblPassword, txtPassword,
-                lblConfirm, txtConfirm,
-                btnCreate, btnCancel
-            });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error creating account:\n" + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
