@@ -7,42 +7,43 @@ namespace ClientApp.Core
     public static class PropertyData
     {
         public static List<Property> GetAllProperties()
+{
+    var list = new List<Property>();
+    using var conn = RealEstateApp.Core.DatabaseHelper.GetConnection("Listings.db");
+    conn.Open();
+
+    var cmd = new SQLiteCommand("SELECT * FROM Listings;", conn);
+    using var reader = cmd.ExecuteReader();
+
+    while (reader.Read())
+    {
+        list.Add(new Property
         {
-            var properties = new List<Property>();
+            Id = Convert.ToInt32(reader["Id"]),
+            Name = reader["Title"].ToString()!,
+            Address = reader["Description"].ToString()!, // or another field
+            Price = (double)Convert.ToDecimal(reader["Price"]),
+            Description = reader["Description"].ToString()!
+        });
+    }
 
-            try
-            {
-                using (var conn = Database.GetConnection())
-                {
-                    conn.Open();
+    return list;
+}
 
-                    string query = "SELECT Id, Name, Address, Price, Description FROM Properties";
-                    using (var cmd = new SQLiteCommand(query, conn))
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var property = new Property
-                            {
-                                Id = reader.GetInt32(0),
-                                Name = reader.GetString(1),
-                                Address = reader.GetString(2),
-                                Price = reader.GetDouble(3), // SQLite REAL → C# double
-                                Description = reader.IsDBNull(4) ? "" : reader.GetString(4)
-                            };
+        public static void SeedProperties()
+{
+    using var conn = RealEstateApp.Core.DatabaseHelper.GetConnection("Listings.db");
+    conn.Open();
 
-                            properties.Add(property);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Optional: handle exceptions (log or show message)
-                Console.WriteLine("Error fetching properties: " + ex.Message);
-            }
+    var cmd = new SQLiteCommand(@"
+        INSERT INTO Listings (Title, Description, Price, AgentId)
+        VALUES 
+        ('Cozy Apartment', '2 bed, 1 bath, central location', 85000, 1),
+        ('Luxury Villa', '5 bed, 4 bath, pool and garden', 450000, 1);
+    ", conn);
 
-            return properties;
-        }
+    cmd.ExecuteNonQuery();
+}
+
     }
 }

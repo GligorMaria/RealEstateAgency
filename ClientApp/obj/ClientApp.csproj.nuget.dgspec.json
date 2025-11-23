@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\ClientApp\\ClientApp.csproj": {}
+    "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\clientapp\\ClientApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\ClientApp\\ClientApp.csproj": {
+    "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\clientapp\\ClientApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\ClientApp\\ClientApp.csproj",
+        "projectUniqueName": "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\clientapp\\ClientApp.csproj",
         "projectName": "ClientApp",
-        "projectPath": "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\ClientApp\\ClientApp.csproj",
+        "projectPath": "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\clientapp\\ClientApp.csproj",
         "packagesPath": "C:\\Users\\Maria\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\ClientApp\\obj\\",
+        "outputPath": "C:\\Users\\Maria\\Documents\\GitHub\\RealEstateAgency\\clientapp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Maria\\AppData\\Roaming\\NuGet\\NuGet.Config"
