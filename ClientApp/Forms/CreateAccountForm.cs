@@ -27,13 +27,13 @@ namespace ClientApp
                 return;
             }
 
-            var newClient = new ClientAccount
+            var newClient = new Client
             {
-                Username = username,
+                Username= username,
                 Password = password,
                 FullName = fullname,
                 Email = email,
-                Phone = phone
+                PhoneNumber = phone
             };
 
             bool success = ClientLogin.AddClient(newClient);

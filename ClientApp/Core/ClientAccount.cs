@@ -1,4 +1,4 @@
-namespace ClientApp.Core
+/*namespace ClientApp.Core
 {
     public class ClientAccount
     {
@@ -8,4 +8,4 @@ namespace ClientApp.Core
         public string Email { get; set; } = "";
         public string Phone { get; set; } = "";
     }
-}
+}*/

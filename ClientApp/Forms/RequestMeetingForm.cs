@@ -6,9 +6,9 @@ namespace ClientApp
 {
     public partial class RequestMeetingForm : Form
     {
-        private ClientAccount client;
+        private Client client;
 
-        public RequestMeetingForm(ClientAccount client)
+        public RequestMeetingForm(Client client)
         {
             InitializeComponent();
             this.client = client;

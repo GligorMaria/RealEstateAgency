@@ -7,9 +7,9 @@ namespace ClientApp
 {
     public partial class ClientDashboardForm : Form
     {
-        private ClientAccount client;
+        private Client client;
 
-        public ClientDashboardForm(ClientAccount client)
+        public ClientDashboardForm(Client client)
         {
             InitializeComponent();
             this.client = client;

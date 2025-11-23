@@ -1,78 +1,68 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+using System.Data.SQLite;
 using System.Windows.Forms;
 
 namespace ClientApp.Core
 {
-    public class ClientLogin
+    public static class ClientLogin
     {
-        private static readonly string DataPath = @"C:\Ana\RealEstateApp\ClientApp\Core\Data\Clients.json";
-
-        public static List<ClientAccount> LoadClients()
+        // Add a new client to the database
+        public static bool AddClient(Client client)
         {
+            using var conn = RealEstateApp.Core.DatabaseHelper.GetConnection("ClientAccounts.db");
+            conn.Open();
+
+var cmd = new SQLiteCommand(@"
+    INSERT INTO Clients (Username, FullName, Email, Password, PhoneNumber)
+    VALUES (@username, @fullname, @email, @password, @phone);", conn);
+
+cmd.Parameters.AddWithValue("@username", client.Username); // ← add this
+cmd.Parameters.AddWithValue("@fullname", client.FullName);
+cmd.Parameters.AddWithValue("@email", client.Email);
+cmd.Parameters.AddWithValue("@password", client.Password);
+cmd.Parameters.AddWithValue("@phone", client.PhoneNumber ?? "");
+
+
             try
             {
-                if (!File.Exists(DataPath))
-                {
-                    // Create an empty file if not exists
-                    Directory.CreateDirectory(Path.GetDirectoryName(DataPath)!);
-                    File.WriteAllText(DataPath, "[]");
-                }
-
-                string json = File.ReadAllText(DataPath);
-                var clients = JsonSerializer.Deserialize<List<ClientAccount>>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-                return clients ?? new();
+                cmd.ExecuteNonQuery();
+                return true;
             }
-            catch (Exception ex)
+            catch (SQLiteException ex)
             {
-                MessageBox.Show($"Error loading clients: {ex.Message}");
-                return new List<ClientAccount>();
-            }
-        }
-
-        public static void SaveClients(List<ClientAccount> clients)
-        {
-            try
-            {
-                string json = JsonSerializer.Serialize(clients, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(DataPath, json);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error saving clients: {ex.Message}");
-            }
-        }
-
-        public static ClientAccount? Validate(string username, string password)
-        {
-            var clients = LoadClients();
-            foreach (var client in clients)
-            {
-                if (client.Username == username && client.Password == password)
-                    return client;
-            }
-            return null;
-        }
-
-        public static bool AddClient(ClientAccount newClient)
-        {
-            var clients = LoadClients();
-
-            if (clients.Exists(c => c.Username == newClient.Username || c.Email == newClient.Email))
-            {
-                MessageBox.Show("Username or email already exists.");
+                MessageBox.Show($"❌ Could not add client: {ex.Message}");
                 return false;
             }
+        }
 
-            clients.Add(newClient);
-            SaveClients(clients);
-            return true;
+        // Validate login credentials
+        public static Client? Validate(string email, string password)
+        {
+            using var conn = RealEstateApp.Core.DatabaseHelper.GetConnection("ClientAccounts.db");
+            conn.Open();
+
+            var cmd = new SQLiteCommand(@"
+                SELECT Id, FullName, Email, Password, PhoneNumber
+                FROM Clients
+                WHERE Email=@Email AND Password=@Password;", conn);
+
+            cmd.Parameters.AddWithValue("@Email", email);
+            cmd.Parameters.AddWithValue("@Password", password);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new Client
+                {
+                    Id = reader["Id"].ToString(),
+                    FullName = reader["FullName"].ToString()!,
+                    Email = reader["Email"].ToString()!,
+                    Password = reader["Password"].ToString()!,
+                    PhoneNumber = reader["PhoneNumber"].ToString()
+                };
+            }
+
+            return null;
         }
     }
 }

@@ -256,7 +256,9 @@
       "ClientApp/1.0.0": {
         "dependencies": {
           "RealEstateApp.Core": "1.0.0",
-          "System.Data.SQLite": "2.0.2"
+          "SQLitePCLRaw.bundle_e_sqlite3": "3.0.2",
+          "System.Data.SQLite": "2.0.2",
+          "System.Data.SQLite.Core": "1.0.119"
         },
         "runtime": {
           "ClientApp.dll": {

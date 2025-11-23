@@ -6,20 +6,27 @@ namespace ClientApp.Core
     [Serializable]
     public class Client
     {
-        // Basic info
+        // Unique identifier
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string FullName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; } // Consider hashing in the future
 
-        // Optional contact info
-        public string PhoneNumber { get; set; }
-        public string PreferredLocation { get; set; }
+        // Required info
+        public string Username { get; set; } = "";
 
-        // Client’s saved/favorite properties
+        public required string FullName { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+
+        // Optional info
+        public string? PhoneNumber { get; set; }
+        public string? PreferredLocation { get; set; }
+
+        // Favorite properties (optional)
         public List<string> FavoritePropertyIds { get; set; } = new List<string>();
 
-        // Constructor
+        // Parameterless constructor (needed for serialization)
+        public Client() { }
+
+        // Constructor with required fields
         public Client(string fullName, string email, string password)
         {
             FullName = fullName;
@@ -27,10 +34,7 @@ namespace ClientApp.Core
             Password = password;
         }
 
-        // Parameterless constructor for JSON serialization
-        public Client() { }
-
-        // Add/remove favorites
+        // Favorites management
         public void AddFavorite(string propertyId)
         {
             if (!FavoritePropertyIds.Contains(propertyId))

@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using ClientApp.Core;
 using ClientApp.Forms;
 
-
 namespace ClientApp
 {
     public partial class ClientLoginForm : Form
@@ -24,11 +23,14 @@ namespace ClientApp
                 return;
             }
 
+            // Validate login
             var client = ClientLogin.Validate(username, password);
 
             if (client != null)
             {
                 MessageBox.Show($"Welcome, {client.FullName}!");
+
+                // Open dashboard
                 var dashboard = new ClientDashboardForm(client);
                 dashboard.Show();
                 this.Hide();
