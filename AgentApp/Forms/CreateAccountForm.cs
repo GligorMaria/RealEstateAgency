@@ -101,19 +101,8 @@ namespace AgentApp.Forms
 
             try
             {
-                string actualPath = DatabaseHelper.GetDatabasePath("AgentAccounts.db");
-                MessageBox.Show("CreateAccountForm is using DB path:\n" + actualPath, "Path Check");
-
                 using var conn = DatabaseHelper.GetConnection("AgentAccounts.db");
                 conn.Open();
-
-                var verifyCmd = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table' AND name='Agents';", conn);
-                var result = verifyCmd.ExecuteScalar();
-                if (result == null)
-                {
-                    MessageBox.Show("❌ Agents table NOT found in this DB", "Table Check");
-                    return;
-                }
 
                 var checkCmd = new SQLiteCommand("SELECT COUNT(*) FROM Agents WHERE Username=@u", conn);
                 checkCmd.Parameters.AddWithValue("@u", username);
