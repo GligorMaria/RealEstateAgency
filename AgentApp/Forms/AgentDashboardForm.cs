@@ -7,7 +7,6 @@ namespace AgentApp.Forms
     public class AgentDashboardForm : Form
     {
         private Button btnListings;
-        private Button btnViewings;
         private Button btnProfile;
         private Button btnLogout;
         private Button btnClose;
@@ -17,14 +16,13 @@ namespace AgentApp.Forms
         {
             agentUsername = username;
 
-            // Form styling
             this.Text = "Agent Dashboard - " + username;
-            this.ClientSize = new Size(400, 350);
+            this.ClientSize = new Size(400, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.None; // custom close button
+            this.FormBorderStyle = FormBorderStyle.None;
             this.DoubleBuffered = true;
 
-            // Welcome label
+            // Welcome label with background
             Label lblWelcome = new Label()
             {
                 Text = $"Welcome, {username}",
@@ -32,7 +30,8 @@ namespace AgentApp.Forms
                 AutoSize = true,
                 Font = new Font("Segoe UI", 14F, FontStyle.Bold),
                 ForeColor = Color.White,
-                BackColor = Color.Transparent
+                BackColor = Color.MediumPurple,
+                Padding = new Padding(5)
             };
 
             // View Listings button
@@ -49,14 +48,14 @@ namespace AgentApp.Forms
             btnListings.FlatAppearance.BorderSize = 0;
             btnListings.Click += (s, e) =>
             {
-                var listingsForm = new ViewListingsForm(username);
+                var listingsForm = new ManageListingsForm(username);
                 listingsForm.ShowDialog();
             };
 
-            // Manage Viewings button
-            btnViewings = new Button()
+            // Create Listing button
+            Button btnCreateListing = new Button()
             {
-                Text = "Manage Viewings",
+                Text = "Create Listing",
                 Location = new Point(120, 130),
                 Size = new Size(160, 40),
                 BackColor = Color.MediumPurple,
@@ -64,18 +63,36 @@ namespace AgentApp.Forms
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 12F, FontStyle.Bold)
             };
-            btnViewings.FlatAppearance.BorderSize = 0;
-            btnViewings.Click += (s, e) =>
+            btnCreateListing.FlatAppearance.BorderSize = 0;
+            btnCreateListing.Click += (s, e) =>
             {
-                var viewingsForm = new ViewingsForm(username);
-                viewingsForm.ShowDialog();
+                var createListingForm = new CreateListingForm(agentUsername);
+                createListingForm.ShowDialog();
+            };
+
+            // Delete Listings button
+            Button btnDeleteListings = new Button()
+            {
+                Text = "Delete Listings",
+                Location = new Point(120, 180),
+                Size = new Size(160, 40),
+                BackColor = Color.OrangeRed,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold)
+            };
+            btnDeleteListings.FlatAppearance.BorderSize = 0;
+            btnDeleteListings.Click += (s, e) =>
+            {
+                var deleteForm = new DeleteListingsForm(agentUsername);
+                deleteForm.ShowDialog();
             };
 
             // Profile Management button
             btnProfile = new Button()
             {
                 Text = "Profile Management",
-                Location = new Point(120, 180),
+                Location = new Point(120, 230),
                 Size = new Size(160, 40),
                 BackColor = Color.DeepPink,
                 ForeColor = Color.White,
@@ -93,7 +110,7 @@ namespace AgentApp.Forms
             btnLogout = new Button()
             {
                 Text = "Logout",
-                Location = new Point(120, 230),
+                Location = new Point(120, 280),
                 Size = new Size(160, 40),
                 BackColor = Color.DarkRed,
                 ForeColor = Color.White,
@@ -103,10 +120,10 @@ namespace AgentApp.Forms
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.Click += (s, e) =>
             {
-                this.Close(); // triggers FormClosed event in LoginForm to show login again
+                this.Close();
             };
 
-            // Classic "X" close button
+            // Close button
             btnClose = new Button()
             {
                 Text = "X",
@@ -123,13 +140,13 @@ namespace AgentApp.Forms
             // Add controls
             Controls.Add(lblWelcome);
             Controls.Add(btnListings);
-            Controls.Add(btnViewings);
+            Controls.Add(btnCreateListing);
+            Controls.Add(btnDeleteListings);
             Controls.Add(btnProfile);
             Controls.Add(btnLogout);
             Controls.Add(btnClose);
         }
 
-        // Gradient background
         protected override void OnPaint(PaintEventArgs e)
         {
             var rect = this.ClientRectangle;

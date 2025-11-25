@@ -20,9 +20,6 @@ namespace AgentApp.Forms
             this.ClientSize = new Size(450, 320);
             this.BackColor = Color.FromArgb(255, 240, 245); // Soft pastel background
 
-            // ✅ Confirm form is launching
-            MessageBox.Show("✅ StartUpForm constructor ran", "Debug");
-
             // Buttons
             btnAgent = CreateCuteButton("Agent", new Point(50, 150));
             btnClient = CreateCuteButton("Client", new Point(250, 150));
