@@ -102,7 +102,8 @@ namespace AgentApp.Forms
                     SELECT Id, Title, Location, Price, PropertyType
                     FROM Listings
                     WHERE AgentUsername = @u
-                    ORDER BY Title ASC;", conn);
+                    ORDER BY Id ASC;", conn);
+
 
                 cmd.Parameters.AddWithValue("@u", agentUsername);
 

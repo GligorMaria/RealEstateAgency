@@ -15,6 +15,7 @@ namespace AgentApp.Forms
         private ComboBox cmbType;
         private Button btnSubmit;
         private Button btnCancel;
+        private Button btnClose;   // <-- added
         private string agentUsername;
 
         public CreateListingForm(string username)
@@ -36,7 +37,7 @@ namespace AgentApp.Forms
                 Text = "Title",
                 Location = new Point(40, 40),
                 ForeColor = Color.White,
-                BackColor = Color.DeepSkyBlue, // colorful background
+                BackColor = Color.DeepSkyBlue,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
@@ -48,13 +49,13 @@ namespace AgentApp.Forms
                 ForeColor = Color.DarkSlateGray
             };
 
-            // Description (larger box)
+            // Description
             Label lblDescription = new Label()
             {
                 Text = "Description",
                 Location = new Point(40, 90),
                 ForeColor = Color.White,
-                BackColor = Color.LimeGreen, // colorful background
+                BackColor = Color.LimeGreen,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
@@ -62,7 +63,7 @@ namespace AgentApp.Forms
             {
                 Location = new Point(150, 90),
                 Width = 240,
-                Height = 100, // larger height
+                Height = 100,
                 Multiline = true,
                 BackColor = inputColor,
                 ForeColor = Color.DarkSlateGray,
@@ -75,7 +76,7 @@ namespace AgentApp.Forms
                 Text = "Price",
                 Location = new Point(40, 210),
                 ForeColor = Color.White,
-                BackColor = Color.Gold, // colorful background
+                BackColor = Color.Gold,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
@@ -93,7 +94,7 @@ namespace AgentApp.Forms
                 Text = "Location",
                 Location = new Point(40, 250),
                 ForeColor = Color.White,
-                BackColor = Color.OrangeRed, // colorful background
+                BackColor = Color.OrangeRed,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
@@ -111,7 +112,7 @@ namespace AgentApp.Forms
                 Text = "Type",
                 Location = new Point(40, 290),
                 ForeColor = Color.White,
-                BackColor = Color.MediumOrchid, // colorful background
+                BackColor = Color.MediumOrchid,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
@@ -157,6 +158,20 @@ namespace AgentApp.Forms
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.Click += (s, e) => this.Close();
 
+            // X button (top-right corner)
+            btnClose = new Button()
+            {
+                Text = "X",
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                FlatStyle = FlatStyle.Flat,
+                Location = new Point(this.ClientSize.Width - 40, 10),
+                Size = new Size(30, 30),
+                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+            };
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.Click += (s, e) => this.Close();
+
             Controls.AddRange(new Control[]
             {
                 lblTitle, txtTitle,
@@ -164,7 +179,8 @@ namespace AgentApp.Forms
                 lblPrice, txtPrice,
                 lblLocation, txtLocation,
                 lblType, cmbType,
-                btnSubmit, btnCancel
+                btnSubmit, btnCancel,
+                btnClose
             });
         }
 

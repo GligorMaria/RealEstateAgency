@@ -2,87 +2,86 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using AgentApp.Core;
+using System.Drawing;
 
 namespace AgentApp.Forms
 {
     public class ProfileManagementForm : Form
     {
-        private TextBox txtFullName;
-        private TextBox txtEmail;
-        private TextBox txtPhone;
-        private Button btnSave;
+        private Button btnEditDetails;
+        private Button btnChangePassword;
         private Button btnDelete;
         private string agentUsername;
-        private string agentsFile = Path.Combine("Core", "Data", "Agents.json");
 
         public ProfileManagementForm(string username)
         {
             agentUsername = username;
 
             this.Text = "Profile Management - " + username;
-            this.ClientSize = new System.Drawing.Size(400, 250);
+            this.ClientSize = new Size(420, 300);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            Label lblFullName = new Label() { Text = "Full Name", Location = new System.Drawing.Point(20, 30) };
-            txtFullName = new TextBox() { Location = new System.Drawing.Point(120, 30), Width = 200 };
+            // Edit Details button
+            btnEditDetails = new Button()
+            {
+                Text = "Edit Details",
+                Dock = DockStyle.Top,
+                Height = 100,
+                BackColor = Color.DeepPink,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnEditDetails.FlatAppearance.BorderSize = 0;
+            btnEditDetails.Click += BtnEditDetails_Click;
 
-            Label lblEmail = new Label() { Text = "Email", Location = new System.Drawing.Point(20, 70) };
-            txtEmail = new TextBox() { Location = new System.Drawing.Point(120, 70), Width = 200 };
+            // Change Password button
+            btnChangePassword = new Button()
+            {
+                Text = "Change Password",
+                Dock = DockStyle.Top,
+                Height = 100,
+                BackColor = Color.MediumPurple,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnChangePassword.FlatAppearance.BorderSize = 0;
+            btnChangePassword.Click += BtnChangePassword_Click;
 
-            Label lblPhone = new Label() { Text = "Phone", Location = new System.Drawing.Point(20, 110) };
-            txtPhone = new TextBox() { Location = new System.Drawing.Point(120, 110), Width = 200 };
-
-            btnSave = new Button() { Text = "Save Changes", Location = new System.Drawing.Point(20, 160), Width = 140 };
-            btnSave.Click += BtnSave_Click;
-
-            btnDelete = new Button() { Text = "Delete Account", Location = new System.Drawing.Point(180, 160), Width = 140, BackColor = System.Drawing.Color.DarkRed, ForeColor = System.Drawing.Color.White };
+            // Delete Account button
+            btnDelete = new Button()
+            {
+                Text = "Delete Account",
+                Dock = DockStyle.Top,
+                Height = 100,
+                BackColor = Color.DarkRed,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnDelete.FlatAppearance.BorderSize = 0;
             btnDelete.Click += BtnDelete_Click;
 
-            Controls.AddRange(new Control[] { lblFullName, txtFullName, lblEmail, txtEmail, lblPhone, txtPhone, btnSave, btnDelete });
-
-            LoadAgentData();
+            Controls.AddRange(new Control[] { btnDelete, btnChangePassword, btnEditDetails });
         }
 
-        private void LoadAgentData()
+        private void BtnEditDetails_Click(object? sender, EventArgs e)
         {
-            var agents = DataHandler.Load<Agent>(agentsFile);
-            var agent = Array.Find(agents, a => a.Username == agentUsername);
-
-            if (agent != null)
-            {
-                txtFullName.Text = agent.FullName;
-                txtEmail.Text = agent.Email;
-                txtPhone.Text = agent.Phone;
-            }
+            var form = new EditDetailsForm(agentUsername);
+            form.ShowDialog();
         }
 
-        private void BtnSave_Click(object? sender, EventArgs e)
+        private void BtnChangePassword_Click(object? sender, EventArgs e)
         {
-            var agents = DataHandler.Load<Agent>(agentsFile);
-            for (int i = 0; i < agents.Length; i++)
-            {
-                if (agents[i].Username == agentUsername)
-                {
-                    agents[i].FullName = txtFullName.Text;
-                    agents[i].Email = txtEmail.Text;
-                    agents[i].Phone = txtPhone.Text;
-                    break;
-                }
-            }
-
-            DataHandler.Save(agentsFile, agents);
-            MessageBox.Show("Profile updated successfully.");
+            var form = new ChangePasswordForm(agentUsername);
+            form.ShowDialog();
         }
 
         private void BtnDelete_Click(object? sender, EventArgs e)
         {
-            var confirm = MessageBox.Show("Are you sure you want to delete your account?", "Confirm Delete", MessageBoxButtons.YesNo);
-            if (confirm == DialogResult.Yes)
-            {
-                DataHandler.Remove<Agent>(agentsFile, a => a.Username == agentUsername);
-                MessageBox.Show("Account deleted.");
-                this.Close(); // close profile form, dashboard will remain
-            }
+            var form = new DeleteAccountForm(agentUsername);
+            form.ShowDialog();
         }
     }
 }

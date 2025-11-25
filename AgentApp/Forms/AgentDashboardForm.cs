@@ -1,6 +1,8 @@
 using System;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Windows.Forms;
+using RealEstateApp.Core;
 
 namespace AgentApp.Forms
 {
@@ -11,34 +13,40 @@ namespace AgentApp.Forms
         private Button btnLogout;
         private Button btnClose;
         private string agentUsername;
+        private Label lblWelcome;
 
         public AgentDashboardForm(string username)
         {
             agentUsername = username;
 
             this.Text = "Agent Dashboard - " + username;
-            this.ClientSize = new Size(400, 400);
+            this.ClientSize = new Size(600, 400); // wider window
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.None;
             this.DoubleBuffered = true;
 
-            // Welcome label with background
-            Label lblWelcome = new Label()
+            // Get first name from DB
+            string firstName = GetFirstName(username);
+
+           // Welcome label (centered horizontally, no purple background)
+            lblWelcome = new Label()
             {
-                Text = $"Welcome, {username}",
-                Location = new Point(100, 30),
+                Text = $"Welcome, {firstName}!",
                 AutoSize = true,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
+                Font = new Font("Segoe UI", 16F, FontStyle.Bold),
                 ForeColor = Color.White,
-                BackColor = Color.MediumPurple,
-                Padding = new Padding(5)
+                BackColor = Color.Transparent // transparent instead of purple
             };
+
+            // Position will be adjusted after adding controls
+            this.Controls.Add(lblWelcome);
+            CenterLabelHorizontally(lblWelcome, 30);
 
             // View Listings button
             btnListings = new Button()
             {
                 Text = "View Listings",
-                Location = new Point(120, 80),
+                Location = new Point(220, 80),
                 Size = new Size(160, 40),
                 BackColor = Color.DeepPink,
                 ForeColor = Color.White,
@@ -56,7 +64,7 @@ namespace AgentApp.Forms
             Button btnCreateListing = new Button()
             {
                 Text = "Create Listing",
-                Location = new Point(120, 130),
+                Location = new Point(220, 130),
                 Size = new Size(160, 40),
                 BackColor = Color.MediumPurple,
                 ForeColor = Color.White,
@@ -74,7 +82,7 @@ namespace AgentApp.Forms
             Button btnDeleteListings = new Button()
             {
                 Text = "Delete Listings",
-                Location = new Point(120, 180),
+                Location = new Point(220, 180),
                 Size = new Size(160, 40),
                 BackColor = Color.OrangeRed,
                 ForeColor = Color.White,
@@ -92,7 +100,7 @@ namespace AgentApp.Forms
             btnProfile = new Button()
             {
                 Text = "Profile Management",
-                Location = new Point(120, 230),
+                Location = new Point(220, 230),
                 Size = new Size(160, 40),
                 BackColor = Color.DeepPink,
                 ForeColor = Color.White,
@@ -110,7 +118,7 @@ namespace AgentApp.Forms
             btnLogout = new Button()
             {
                 Text = "Logout",
-                Location = new Point(120, 280),
+                Location = new Point(220, 280),
                 Size = new Size(160, 40),
                 BackColor = Color.DarkRed,
                 ForeColor = Color.White,
@@ -138,13 +146,44 @@ namespace AgentApp.Forms
             btnClose.Click += (s, e) => this.Close();
 
             // Add controls
-            Controls.Add(lblWelcome);
             Controls.Add(btnListings);
             Controls.Add(btnCreateListing);
             Controls.Add(btnDeleteListings);
             Controls.Add(btnProfile);
             Controls.Add(btnLogout);
             Controls.Add(btnClose);
+
+            // Re-center welcome label after all controls are added
+            CenterLabelHorizontally(lblWelcome, 30);
+        }
+
+        private string GetFirstName(string username)
+        {
+            try
+            {
+                using var conn = DatabaseHelper.GetConnection("AgentAccounts.db");
+                conn.Open();
+
+                var cmd = new SQLiteCommand("SELECT FullName FROM Agents WHERE Username=@u", conn);
+                cmd.Parameters.AddWithValue("@u", username);
+
+                var fullName = cmd.ExecuteScalar()?.ToString();
+                if (!string.IsNullOrEmpty(fullName))
+                {
+                    var parts = fullName.Split(' ');
+                    return parts[0]; // first word = first name
+                }
+            }
+            catch
+            {
+                // fallback to username if DB fails
+            }
+            return username;
+        }
+
+        private void CenterLabelHorizontally(Label lbl, int y)
+        {
+            lbl.Location = new Point((this.ClientSize.Width - lbl.Width) / 2, y);
         }
 
         protected override void OnPaint(PaintEventArgs e)
